@@ -1,11 +1,11 @@
-# 🎬 Why Do Subscribers Walk Away? — Netflix Churn Dashboard
+# Why Do Subscribers Walk Away? — Netflix Churn Dashboard
 
 An interactive Streamlit dashboard that answers one question:
 
 > **What separates Netflix customers who cancel from those who stay, and can a simple model predict who is at risk?**
 
-**🔗 Live app:** `https://netflix-churn-dashboard-vfpfnnu5uwijti4awcjmur.streamlit.app/`
-**📦 Repo:** `https://github.com/sundar61-debug/netflix-churn-dashboard`
+**Live app:** `https://netflix-churn-dashboard-vfpfnnu5uwijti4awcjmur.streamlit.app/`
+**Repo:** `https://github.com/sundar61-debug/netflix-churn-dashboard`
 
 ---
 
@@ -18,8 +18,7 @@ An interactive Streamlit dashboard that answers one question:
 
 ## What's inside (maps to the project rubric)
 
-| Requirement | Where |
-|---|---|
+**| Requirement | Where |**
 | Data cleaning, missing-value rule, `.groupby()`, derived columns | `load_and_clean()` in `app.py`, "Data & cleaning" tab |
 | Faithfulness & Granularity | Section below + "Data & cleaning" tab |
 | 3+ visualizations (bar, histogram, scatter, heatmap) | "Explore" tab |
@@ -52,8 +51,8 @@ Every column has **0% missing**, so nothing needed imputing or dropping. The cod
 - **Train/test alignment:** the test set is re-indexed to the training columns (`reindex(columns=..., fill_value=0)`), so a category missing from one split can't break the model.
 - **Plain-language coefficient example:** holding everything else constant, a **Premium** customer has about **0.11×** the odds of churning compared with a **Basic** customer. A customer paying by **Gift Card** has about **5×** the odds of a **Credit Card** payer.
 
-| Model | Test accuracy | Test log loss |
-|---|---|---|
+**| Model | Test accuracy | Test log loss |**
+
 | Constant (predict base rate) | ~50% | 0.693 |
 | Logistic, numeric features only | ~87% | 0.310 |
 | Logistic, + one-hot plan & payment | ~88% | 0.251 |
