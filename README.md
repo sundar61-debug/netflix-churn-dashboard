@@ -4,8 +4,8 @@ An interactive Streamlit dashboard that answers one question:
 
 > **What separates Netflix customers who cancel from those who stay, and can a simple model predict who is at risk?**
 
-**🔗 Live app:** `<paste your Streamlit Community Cloud link here>`
-**📦 Repo:** `<paste your GitHub repo link here>`
+**🔗 Live app:** `https://netflix-churn-dashboard-vfpfnnu5uwijti4awcjmur.streamlit.app/`
+**📦 Repo:** `https://github.com/sundar61-debug/netflix-churn-dashboard`
 
 ---
 
