@@ -52,44 +52,44 @@ def callout(text):
 
 
 # STEP 1: Load and clean data
-@st.cache_data
+@st.cache_data #Make's streamlit remember the data functions (doesn't reload everytime)
 def load_data():
-    raw = pd.read_csv(Path(__file__).parent / "data" / "netflix_customer_churn.csv")
-    df = raw.copy()
+    raw = pd.read_csv(Path(__file__).parent / "data" / "netflix_customer_churn.csv") # original to use as comparison
+    df = raw.copy() # Data i will mutate
 
     # remove stray spaces in text columns
     text_cols = ["subscription_type", "payment_method", "region", "device",
                  "favorite_genre", "gender"]
     for c in text_cols:
-        df[c] = df[c].str.strip()
+        df[c] = df[c].str.strip() # remove additional spaces in data
 
     # missing values: under 5% missing -> fill in, 5% or more -> drop the column
     for c in df.columns:
-        pct_missing = df[c].isna().mean() * 100
-        if 0 < pct_missing < 5:
-            if pd.api.types.is_numeric_dtype(df[c]):
-                df[c] = df[c].fillna(df[c].median())
+        pct_missing = df[c].isna().mean() * 100 #find number of total columns with missing values
+        if 0 < pct_missing < 5: # if that amount is less than 5 percent
+            if pd.api.types.is_numeric_dtype(df[c]): #if it is a numeric value
+                df[c] = df[c].fillna(df[c].median()) # fill it with the median value
             else:
-                df[c] = df[c].fillna("Unknown")
-        elif pct_missing >= 5:
-            df = df.drop(columns=c)
+                df[c] = df[c].fillna("Unknown") # str is unknown instead of median
+        elif pct_missing >= 5: # if missing values are more tha 5% of total data
+            df = df.drop(columns=c) #drop the na columns
 
     # remove duplicates and impossible values (more than 24 hours watched in a day)
-    df = df.drop_duplicates(subset="customer_id")
-    too_many_hours = int((df["avg_watch_time_per_day"] > 24).sum())
-    df = df[df["avg_watch_time_per_day"] <= 24].reset_index(drop=True)
+    df = df.drop_duplicates(subset="customer_id") # drop duplicate customers using id
+    too_many_hours = int((df["avg_watch_time_per_day"] > 24).sum()) # number of customers with >24hr in a day
+    df = df[df["avg_watch_time_per_day"] <= 24].reset_index(drop=True) #keep the rest and reset index after dropping columns
 
     # new columns
-    df["short_id"] = df["customer_id"].str[:8]
-    df["churn_label"] = df["churned"].map({0: "Stayed", 1: "Churned"})
-    df["engagement_tier"] = pd.cut(df["watch_hours"], bins=[-1, 3, 8, 16, 1000],
+    df["short_id"] = df["customer_id"].str[:8] # idk the purpose j to show the str bs
+    df["churn_label"] = df["churned"].map({0: "Stayed", 1: "Churned"}) # redo churn so it has labels for key 
+    df["engagement_tier"] = pd.cut(df["watch_hours"], bins=[-1, 3, 8, 16, 1000], #column to categorize watch hours so i can visualize
                                    labels=["Light", "Casual", "Regular", "Binge"]).astype(str)
-    df["login_recency"] = df["last_login_days"].apply(
+    df["login_recency"] = df["last_login_days"].apply( # applying function to clasify last login status
         lambda d: "This week" if d <= 7 else ("This month" if d <= 30 else "Gone quiet"))
     return raw, df, too_many_hours
 
 
-raw, df, too_many_hours = load_data()
+raw, df, too_many_hours = load_data() 
 
 # STEP 2: One hot encode- train the models
 num_features = ["watch_hours", "last_login_days", "number_of_profiles", "age"]
